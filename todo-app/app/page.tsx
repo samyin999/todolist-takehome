@@ -1,4 +1,10 @@
-export default function Home() {
+import { prisma } from '@/lib/prisma'
+
+export default async function Home() {
+  const categories = await prisma.category.findMany({
+    orderBy: { createdAt: 'asc' },
+  })
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -6,30 +12,18 @@ export default function Home() {
       </header>
 
       <main className="max-w-2xl mx-auto px-6 py-8">
-        <section className="mb-6">
-          <h2 className="text-base font-semibold text-gray-500 uppercase tracking-wide mb-3">
-            Cat 1
-          </h2>
-          <ul className="space-y-2">
-            <li className="bg-white rounded border border-gray-200 px-4 py-3 text-gray-800">
-              Todo item
-            </li>
-            <li className="bg-white rounded border border-gray-200 px-4 py-3 text-gray-800">
-              Todo item
-            </li>
-          </ul>
-        </section>
+        {categories.length === 0 && (
+          <p className="text-sm text-gray-400">No categories yet.</p>
+        )}
 
-        <section className="mb-6">
-          <h2 className="text-base font-semibold text-gray-500 uppercase tracking-wide mb-3">
-            Cat 2
-          </h2>
-          <ul className="space-y-2">
-            <li className="bg-white rounded border border-gray-200 px-4 py-3 text-gray-800">
-              Todo item
-            </li>
-          </ul>
-        </section>
+        {categories.map((category) => (
+          <section key={category.id} className="mb-6">
+            <h2 className="text-base font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              {category.name}
+            </h2>
+            <p className="text-sm text-gray-400">No todos yet.</p>
+          </section>
+        ))}
       </main>
     </div>
   )
