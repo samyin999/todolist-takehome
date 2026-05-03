@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import CreateCategoryForm from '@/app/components/CreateCategoryForm'
 
 export default async function Home() {
   const categories = await prisma.category.findMany({
@@ -12,6 +13,8 @@ export default async function Home() {
       </header>
 
       <main className="max-w-2xl mx-auto px-6 py-8">
+        <CreateCategoryForm />
+
         {categories.length === 0 && (
           <p className="text-sm text-gray-400">No categories yet.</p>
         )}
