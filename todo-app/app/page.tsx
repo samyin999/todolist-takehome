@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import CreateCategoryForm from '@/app/components/CreateCategoryForm'
 import DeleteCategoryButton from '@/app/components/DeleteCategoryButton'
+import EditCategoryName from '@/app/components/EditCategoryName'
 
 export default async function Home() {
   const categories = await prisma.category.findMany({
@@ -23,7 +24,7 @@ export default async function Home() {
         {categories.map((category) => (
           <section key={category.id} className="mb-6">
             <h2 className="text-base font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center">
-              {category.name}
+              <EditCategoryName id={category.id} name={category.name} />
               <DeleteCategoryButton id={category.id} />
             </h2>
             <p className="text-sm text-gray-400">No todos yet.</p>
