@@ -1,13 +1,5 @@
 import { prisma } from '@/lib/prisma'
-
-function csvEscape(value: string | null | undefined): string {
-  if (value == null) return ''
-  const str = String(value)
-  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-    return `"${str.replace(/"/g, '""')}"`
-  }
-  return str
-}
+import { csvEscape } from '@/lib/csv'
 
 export async function GET() {
   const todos = await prisma.todo.findMany({
