@@ -63,25 +63,25 @@ export default function CreateTodoForm({ categories }: { categories: Category[] 
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
-          className="border border-gray-300 rounded px-3 py-2 text-sm"
+          className="border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder-gray-500"
         />
         <input
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Description (optional)"
-          className="border border-gray-300 rounded px-3 py-2 text-sm"
+          className="border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder-gray-500"
         />
         <input
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 text-sm"
+          className="border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder-gray-500"
         />
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 text-sm"
+          className="border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder-gray-500"
         >
           <option value="">Select a category</option>
           {categories.map((c) => (

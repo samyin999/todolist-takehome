@@ -76,25 +76,25 @@ export default function EditTodoForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
-        className="border border-gray-300 rounded px-3 py-1.5 text-sm"
+        className="border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-900 placeholder-gray-500"
       />
       <input
         type="text"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description (optional)"
-        className="border border-gray-300 rounded px-3 py-1.5 text-sm"
+        className="border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-900 placeholder-gray-500"
       />
       <input
         type="date"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
-        className="border border-gray-300 rounded px-3 py-1.5 text-sm"
+        className="border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-900 placeholder-gray-500"
       />
       <select
         value={categoryId}
         onChange={(e) => setCategoryId(e.target.value)}
-        className="border border-gray-300 rounded px-3 py-1.5 text-sm"
+        className="border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-900 placeholder-gray-500"
       >
         {categories.map((c) => (
           <option key={c.id} value={c.id}>
