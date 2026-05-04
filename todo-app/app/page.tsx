@@ -3,6 +3,8 @@ import CreateCategoryForm from '@/app/components/CreateCategoryForm'
 import DeleteCategoryButton from '@/app/components/DeleteCategoryButton'
 import EditCategoryName from '@/app/components/EditCategoryName'
 import CreateTodoForm from '@/app/components/CreateTodoForm'
+import DeleteTodoButton from '@/app/components/DeleteTodoButton'
+import EditTodoForm from '@/app/components/EditTodoForm'
 
 export default async function Home() {
   const categories = await prisma.category.findMany({
@@ -42,13 +44,24 @@ export default async function Home() {
                   key={todo.id}
                   className="bg-white rounded border border-gray-200 px-4 py-3"
                 >
-                  <p className="font-medium text-gray-800">{todo.title}</p>
-                  {todo.description && (
-                    <p className="text-sm text-gray-500 mt-1">{todo.description}</p>
-                  )}
-                  <p className="text-xs text-gray-400 mt-1">
-                    Due: {new Date(todo.dueDate).toLocaleDateString()}
-                  </p>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="font-medium text-gray-800">{todo.title}</p>
+                      {todo.description && (
+                        <p className="text-sm text-gray-500 mt-1">{todo.description}</p>
+                      )}
+                      <p className="text-xs text-gray-400 mt-1">
+                        Due: {new Date(todo.dueDate).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex gap-3 ml-4 shrink-0">
+                      <EditTodoForm
+                        todo={{ ...todo, dueDate: todo.dueDate.toISOString() }}
+                        categories={categories}
+                      />
+                      <DeleteTodoButton id={todo.id} />
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
