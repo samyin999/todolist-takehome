@@ -5,6 +5,7 @@ import EditCategoryName from '@/app/components/EditCategoryName'
 import CreateTodoForm from '@/app/components/CreateTodoForm'
 import DeleteTodoButton from '@/app/components/DeleteTodoButton'
 import EditTodoForm from '@/app/components/EditTodoForm'
+import ToggleCompleteButton from '@/app/components/ToggleCompleteButton'
 
 export default async function Home() {
   const categories = await prisma.category.findMany({
@@ -45,14 +46,23 @@ export default async function Home() {
                   className="bg-white rounded border border-gray-200 px-4 py-3"
                 >
                   <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-medium text-gray-800">{todo.title}</p>
+                    <div className="flex items-start gap-3">
+                      <ToggleCompleteButton id={todo.id} completed={!!todo.completedAt} />
+                      <div>
+                      <p className={`font-medium ${todo.completedAt ? 'line-through text-gray-400' : 'text-gray-800'}`}>{todo.title}</p>
                       {todo.description && (
                         <p className="text-sm text-gray-500 mt-1">{todo.description}</p>
                       )}
-                      <p className="text-xs text-gray-400 mt-1">
-                        Due: {new Date(todo.dueDate).toLocaleDateString()}
-                      </p>
+                      {(() => {
+                        const overdue = !todo.completedAt && new Date(todo.dueDate) < new Date()
+                        return (
+                          <p className={`text-xs mt-1 ${overdue ? 'text-red-500 font-medium' : 'text-gray-400'}`}>
+                            Due: {new Date(todo.dueDate).toLocaleDateString()}
+                            {overdue && <span className="ml-2 bg-red-100 text-red-600 px-1.5 py-0.5 rounded">Overdue</span>}
+                          </p>
+                        )
+                      })()}
+                    </div>
                     </div>
                     <div className="flex gap-3 ml-4 shrink-0">
                       <EditTodoForm
