@@ -1,14 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function CreateCategoryForm() {
   const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [error, setError] = useState('')
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
 
@@ -25,14 +26,26 @@ export default function CreateCategoryForm() {
     }
 
     setName('')
+    setIsOpen(false)
     router.refresh()
   }
 
+  if (!isOpen) {
+    return (
+      <button
+        onClick={() => setIsOpen(true)}
+        className="mb-6 text-sm text-blue-600 hover:text-blue-800"
+      >
+        + New Category
+      </button>
+    )
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="mb-8">
-      <h2 className="text-lg font-semibold text-gray-700 mb-3">New Category</h2>
+    <form onSubmit={handleSubmit} className="mb-6 bg-white border border-gray-200 rounded p-4">
       <div className="flex gap-2">
         <input
+          autoFocus
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -44,6 +57,13 @@ export default function CreateCategoryForm() {
           className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
         >
           Add
+        </button>
+        <button
+          type="button"
+          onClick={() => { setIsOpen(false); setError(''); setName('') }}
+          className="text-gray-400 hover:text-gray-600 px-2 text-sm"
+        >
+          Cancel
         </button>
       </div>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

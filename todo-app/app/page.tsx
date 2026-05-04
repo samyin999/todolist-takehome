@@ -2,10 +2,14 @@ import { prisma } from '@/lib/prisma'
 import CreateCategoryForm from '@/app/components/CreateCategoryForm'
 import DeleteCategoryButton from '@/app/components/DeleteCategoryButton'
 import EditCategoryName from '@/app/components/EditCategoryName'
+import CreateTodoForm from '@/app/components/CreateTodoForm'
 
 export default async function Home() {
   const categories = await prisma.category.findMany({
     orderBy: { createdAt: 'asc' },
+    include: {
+      todos: { orderBy: { createdAt: 'asc' } },
+    },
   })
 
   return (
@@ -16,6 +20,8 @@ export default async function Home() {
 
       <main className="max-w-2xl mx-auto px-6 py-8">
         <CreateCategoryForm />
+        <div className="mb-4" />
+        <CreateTodoForm categories={categories} />
 
         {categories.length === 0 && (
           <p className="text-sm text-gray-400">No categories yet.</p>
@@ -27,7 +33,25 @@ export default async function Home() {
               <EditCategoryName id={category.id} name={category.name} />
               <DeleteCategoryButton id={category.id} />
             </h2>
-            <p className="text-sm text-gray-400">No todos yet.</p>
+            {category.todos.length === 0 && (
+              <p className="text-sm text-gray-400">No todos yet.</p>
+            )}
+            <ul className="space-y-2">
+              {category.todos.map((todo) => (
+                <li
+                  key={todo.id}
+                  className="bg-white rounded border border-gray-200 px-4 py-3"
+                >
+                  <p className="font-medium text-gray-800">{todo.title}</p>
+                  {todo.description && (
+                    <p className="text-sm text-gray-500 mt-1">{todo.description}</p>
+                  )}
+                  <p className="text-xs text-gray-400 mt-1">
+                    Due: {new Date(todo.dueDate).toLocaleDateString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </section>
         ))}
       </main>
